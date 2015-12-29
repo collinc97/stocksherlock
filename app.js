@@ -17,65 +17,48 @@
 'use strict';
 
 var express = require('express'),
-  app = express(),
-  bluemix = require('./config/bluemix'),
-  watson = require('watson-developer-cloud'),
-  extend = require('util')._extend;
-
-//avoid "request too large" exception
-var bodyParser = require('body-parser');
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+    proxyMiddleware = require('http-proxy-middleware'),
+    bluemix = require('./config/bluemix'),
+    extend = require('util')._extend;
 
 // Bootstrap application settings
-require('./config/express')(app);
+var app = express();
+app.use('/',express.static(__dirname + '/public'));
 
+var defaultCredentials = {
+    version: 'v1',
+    username: '<username>',
+    password: '<password>',
+    url:"http://localhost:8180/tradeoff-analytics/api"
+};
 // if bluemix credentials exists, then override local
-var credentials = extend({
-  version: 'v1',
-  username: '<username>',
-  password: '<password>'
-}, bluemix.getServiceCreds('tradeoff_analytics')); // VCAP_SERVICES
+var credentials = extend(defaultCredentials, bluemix.getServiceCreds('tradeoff_analytics')); 
 
-// Create the service wrapper
-var tradeoffAnalytics = watson.tradeoff_analytics(credentials);
-
-// render index page
-app.get('/', function(req, res) {
-  res.render('index');
+//Create the service wrapper
+var taProxy = proxyMiddleware('/tradeoff-analytics-proxy', {
+  target: credentials.url +'/' + credentials.version,
+  auth: credentials.username+':'+credentials.password,
+  pathRewrite: {
+    '^/tradeoff-analytics-proxy/dilemmas' : '/dilemmas',
+    '^/tradeoff-analytics-proxy/events' : '/events'
+  },
+  onProxyReq: function(proxyReq, req, res) {
+    // add ip address if client sent metadata
+    var metadata = req.header('x-watson-metadata');
+    if (metadata) {
+      metadata += "client-ip:" + req.ip;
+      proxyReq.setHeader('x-watson-metadata', metadata);
+    }
+  },
+  onError: function (err, req, res) {
+    res.writeHead(502, {
+      'Content-Type': 'text/plain'
+    });
+    res.end('Error connecting to Watson Tradeoff Analytics');
+  }
 });
 
-app.post('/demo/dilemmas/', function(req, res) {
-  var params = extend(req.body);
-  params.metadata_header = getMetadata(req);
-  
-  tradeoffAnalytics.dilemmas(params, function(err, dilemma) {
-    if (err) 
-      return res.status(Number(err.code) || 502).send(err.error || err.message || 'Error processing the request');
-    else
-      return res.json(dilemma);
-  });
-});
-
-app.post('/demo/events/', function(req, res) {
-  var params = extend(req.body);
-  params.metadata_header = getMetadata(req);
-  
-  tradeoffAnalytics.events(params, function(err) {
-    if (err)
-      return res.status(Number(err.code) || 502).send(err.error || err.message || 'Error forwarding events');
-    else
-      return res.send();
-  });
-});
-
-function getMetadata(req) {
-	var metadata = req.header('x-watson-metadata');
-	if (metadata) {
-		metadata += "client-ip:" + req.ip;
-	}
-	return metadata;
-}
+app.use(taProxy);
 
 var port = process.env.VCAP_APP_PORT || 2000;
 app.listen(port);
