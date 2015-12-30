@@ -17,48 +17,11 @@
 'use strict';
 
 var express = require('express'),
-    proxyMiddleware = require('http-proxy-middleware'),
-    bluemix = require('./config/bluemix'),
-    extend = require('util')._extend;
+    tradeoffAnalyticsProxy = require('./tradeoff-analytics-proxy');
 
-// Bootstrap application settings
 var app = express();
 app.use('/',express.static(__dirname + '/public'));
-
-var defaultCredentials = {
-    version: 'v1',
-    username: '<username>',
-    password: '<password>',
-    url:"http://localhost:8180/tradeoff-analytics/api"
-};
-// if bluemix credentials exists, then override local
-var credentials = extend(defaultCredentials, bluemix.getServiceCreds('tradeoff_analytics')); 
-
-//Create the service wrapper
-var taProxy = proxyMiddleware('/tradeoff-analytics-proxy', {
-  target: credentials.url +'/' + credentials.version,
-  auth: credentials.username+':'+credentials.password,
-  pathRewrite: {
-    '^/tradeoff-analytics-proxy/dilemmas' : '/dilemmas',
-    '^/tradeoff-analytics-proxy/events' : '/events'
-  },
-  onProxyReq: function(proxyReq, req, res) {
-    // add ip address if client sent metadata
-    var metadata = req.header('x-watson-metadata');
-    if (metadata) {
-      metadata += "client-ip:" + req.ip;
-      proxyReq.setHeader('x-watson-metadata', metadata);
-    }
-  },
-  onError: function (err, req, res) {
-    res.writeHead(502, {
-      'Content-Type': 'text/plain'
-    });
-    res.end('Error connecting to Watson Tradeoff Analytics');
-  }
-});
-
-app.use(taProxy);
+app.use(tradeoffAnalyticsProxy());
 
 var port = process.env.VCAP_APP_PORT || 2000;
 app.listen(port);
