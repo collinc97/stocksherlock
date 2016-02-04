@@ -58,7 +58,11 @@ module.exports = function(options) {
     target: options.url +'/' + options.version,
     auth: options.username+':'+options.password,
     pathRewrite: pathRewrite,
+    headers: {
+      host: 'watsonplatform.net'
+    },
     onError: function (err, req, res) {
+      console.error(err);
       res.writeHead(502, {
         'Content-Type': 'text/plain'
       });
