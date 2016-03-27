@@ -1,12 +1,11 @@
----
 declared-services:
-  tradeoff-analytics-service-standard:
+  tradeoff-analytics-standard-service:
     label: tradeoff_analytics
     plan: standard
 applications:
 - services:
-  - tradeoff-analytics-service-standard
-  name: tradeoff-analytics-v2-dolev
+  - tradeoff-analytics-standard-service
+  name: tradeoff-analytics-ui-v2-demo
   command: node app.js
   path: .
-  memory: 512M
+  memory: 128M

@@ -1,5 +1,5 @@
 /**
- * Copyright 2014-2015 IBM Corp. All Rights Reserved.
+ * Copyright 2014-2016 IBM Corp. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,20 @@
 'use strict';
 
 var express = require('express'),
-    tradeoffAnalyticsProxy = require('./tradeoff-analytics-proxy');
+    tradeoffAnalyticsConfig = require('./tradeoff-analytics-config');
 
 var app = express();
 app.use('/',express.static(__dirname + '/public'));
-app.use(tradeoffAnalyticsProxy());
+
+/* For local development, copy your service instance credentials 
+var serviceCredentials = {
+  username: '<username>',
+  password: '<password>'
+}*/
+tradeoffAnalyticsConfig.setupToken(app /*, serviceCredentials*/); 
+
+// to communicate with the service with a proxy rather then a token, use:
+// tradeoffAnalyticsConfig.setupProxy(app);
 
 var port = process.env.VCAP_APP_PORT || 2000;
 app.listen(port);
