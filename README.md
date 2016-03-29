@@ -4,11 +4,26 @@
   better choices under multiple conflicting goals. The service combines smart
   visualization and recommendations for tradeoff exploration.
 
+This sample application shows how to embed the Tradeoff Analytics (TA) widget in an app. 
+In particular, note the following files:
+
+Client: 
+- public/index.html -- the (very simple) web app. It just contains a single full-screen node under which the TA widget will be created.
+- public/index.js -- a script that shows how to create a TA widget, controll it and subscribe be notified on events occuring inside it.
+
+Server:
+- app.js -- node.js / express server that provides an end-point for obtaining a token.
+- tradeoff-analytics-config.js -- a node module proving end-points for communicating with the TA service using either tokens or proxy. 
+You may modify this based on your needs, e.g. to support authentication.
+
+Data:
+- public/data.json -- sample JSON input data. 
+
 Give it a try! Click the button below to fork into IBM DevOps Services and deploy your own copy of this application on Bluemix.
 
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/dolev.dotan/tradeoff-analytics-v2-nodejs-vanilla)
+[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/dolevdotan/tradeoff-analytics-v2-vanilla-nodejs)
 
-## Getting Started
+## Local Development - Getting Started
 
 1. Create a Bluemix Account
 

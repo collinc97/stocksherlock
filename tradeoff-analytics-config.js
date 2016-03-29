@@ -17,8 +17,7 @@
 'use strict';
 
 var watson = require('watson-developer-cloud'),
-    extend = require('util')._extend,
-    bodyParser = require('body-parser');
+    extend = require('util')._extend;
 
 var defaultConnectionDetails = {
     url: 'https://gateway.watsonplatform.net/tradeoff-analytics/api/v1',
@@ -59,6 +58,7 @@ module.exports = {
     var tradeoffAnalytics = watson.tradeoff_analytics(credentials);
     
     // Configure Express for json messages
+    var bodyParser = require('body-parser');
     app.use(bodyParser.json({limit: '50mb'}));
     app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
     

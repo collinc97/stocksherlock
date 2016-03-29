@@ -14,24 +14,23 @@
  * limitations under the License.
  */
 
-// Create Tradeoff Analytics Client with default options
+// Create the Tradeoff Analytics Client under the 'ta' node, with default options
 var taClient = new TradeoffAnalytics('ta');
   
   // Start the client
 taClient.start(function(){
   // Upon success, load the problem json...
   $.getJSON('data.json', function(data) {
-    // and pass it to the client
+    // ...and pass it to the client
     taClient.show(data);
   });
     
-  // subscribing to events
+  // subscribe to events
   taClient.subscribe('onError', function (error) {
     console.log('TA Widget Sent Error: ' + error);
   });
   
   taClient.subscribe('doneClicked', function (op) {
-    alert('final decision is ' + op.name);
     console.log('final decision is ' + op.name);
   });
   
@@ -48,8 +47,7 @@ taClient.start(function(){
     console.log('Clicked. '+ op.name);
   });
 
-  // Cancelling subscriptions:
-  //
+  // To cancel subscription, use either:
   //   clk.unsubscribe();
   //   taClient.clearSubscriptions('problemResolved');
   //   taClient.clearAllSubscriptions();         
