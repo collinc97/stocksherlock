@@ -13,7 +13,7 @@ In particular, note the following files:
 - **public/index.js**   -- a script that shows how to create and use the TA widget
 
 **Server:**
-- **app.js** -- node.js / express server that provides an end-point for obtaining a token.
+- **app.js** -- node.js / express server that provides an end-point for obtaining a token needed to communcate with the service (see [Programming models for Watson services] (http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/doc/getting_started/gs-develop.shtml))
 - **tradeoff-analytics-config.js** -- a node module proving end-points for communicating with the TA service using either tokens or proxy. 
 You may modify this based on your needs, e.g. to support authentication.
 
