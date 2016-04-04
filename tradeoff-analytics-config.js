@@ -36,7 +36,7 @@ module.exports = {
   
     var authorization = watson.authorization(credentials);
 
-    app.get('/tradeoff-analytics-token', function(req, res) {
+    app.post('/tradeoff-analytics-token', function(req, res) {
       authorization.getToken(params, function (err, token) {
         if (!token) {
           console.log('error:', err);
