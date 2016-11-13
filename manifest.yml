@@ -1,3 +1,4 @@
+---
 declared-services:
   tradeoff-analytics-standard-service:
     label: tradeoff_analytics
@@ -5,7 +6,8 @@ declared-services:
 applications:
 - services:
   - tradeoff-analytics-standard-service
-  name: <application-name>
+  name: stocksherlock
   command: node app.js
   path: .
   memory: 128M
+  host: stocksherlock
