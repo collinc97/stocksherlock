@@ -19,9 +19,11 @@
   
 ## How to retrieve a .csv data file for a preferred month
   1. Run `runserver.py` in `/stocksherlock/stockBrowser/runserver.py`
-  2. Select stocks to be filtered by NASDAQ API.
-  3. Give IBM Watson your `finaloutput.csv` file produced by stockBrowser [http://tradeoff-analytics-csvtojson.mybluemix.net/](http://tradeoff-analytics-csvtojson.mybluemix.net/)
-  4. Run the StockSherlock comparison tool!
+  2. Navigate to `localhost:5000/home` in your browser
+  3. Select stocks to be filtered by NASDAQ API.
+  4. Select and submit date range.
+  5. Give IBM Watson your `finaloutput.csv` file produced by stockBrowser [http://tradeoff-analytics-csvtojson.mybluemix.net/](http://tradeoff-analytics-csvtojson.mybluemix.net/)
+  6. Run the StockSherlock comparison tool!
   
   
   
