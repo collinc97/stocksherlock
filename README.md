@@ -7,10 +7,10 @@
   
 ## Dependencies
   The following `pip` packages must be installed for the backend to function properly.
-  *Flask
-  *Requests
-  *io
-  *pandas
+  * Flask
+  * Requests
+  * io
+  * pandas
 
 ## Stock Comparison Quickstart
   Instant Demo Here: [http://stocksherlock.mybluemix.net/](http://stocksherlock.mybluemix.net/) (Don't worry there's a built in optional tutorial:)
