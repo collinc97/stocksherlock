@@ -5,6 +5,13 @@
   form of numpy arrays that are modeled under our metrics: Variability Mean, Growth Rate, Volume Mean, Volume Spread, and Risk. This data
   is condensed and converted into a .csv file that IBM Watson's Tradeoff Analytics API displays in a stock comparison visualization tool.
   
+## Dependencies
+  The following `pip` packages must be installed for the backend to function properly.
+  *Flask
+  *Requests
+  *io
+  *pandas
+
 ## Stock Comparison Quickstart
   Instant Demo Here: [http://stocksherlock.mybluemix.net/](http://stocksherlock.mybluemix.net/) (Don't worry there's a built in optional tutorial:)
   
